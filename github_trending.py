@@ -32,7 +32,7 @@ def get_open_issues_amount(repo_owner, repo_name):
 
 
 def pretty_print_output(repositories):
-    header_string = '{0:^30} | {1:^5} | {2:^11} | {3:<45}'
+    header_string = '{0:^30} | {1:^5} | {2:^11} | {3:^45}'
     format_string = '{0:<30} | {1:^5} | {2:^11} | {3:<45}'
     separator_string = '-' * 103
     print(separator_string)

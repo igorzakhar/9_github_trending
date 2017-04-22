@@ -17,18 +17,18 @@ $ python github_trending.py
 Пример вывода результатов:
 ```#!bash
 -------------------------------------------------------------------------------------------------------
-             Name              | Stars | Open issues | URL
+             Name              | Stars | Open issues |                      URL
 -------------------------------------------------------------------------------------------------------
-pytorch-CycleGAN-and-pix2pix   | 1175  |      5      | https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+zuck.js                        | 1944  |      0      | https://github.com/ramon82/zuck.js
 -------------------------------------------------------------------------------------------------------
-tamperchrome                   |  508  |      1      | https://github.com/google/tamperchrome
+tamperchrome                   |  516  |      1      | https://github.com/google/tamperchrome
 -------------------------------------------------------------------------------------------------------
 SuperTextView                  |  483  |      2      | https://github.com/chenBingX/SuperTextView
 -------------------------------------------------------------------------------------------------------
-fastText_multilingual          |  370  |      1      | https://github.com/Babylonpartners/fastText_multilingual
+polaris                        |  352  |      6      | https://github.com/Shopify/polaris
 -------------------------------------------------------------------------------------------------------
-polaris                        |  348  |      6      | https://github.com/Shopify/polaris
--------------------------------------------------------------------------------------------------------
+...
+...
 ```
 
 # Цели проекта
