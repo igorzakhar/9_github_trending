@@ -3,18 +3,13 @@ from datetime import date, timedelta
 import requests
 
 
-BASE_URL = 'https://api.github.com'
-TOP_SIZE = 20
-RECENT_DAYS = 7
-
-
 def get_date(recent_days):
     return date.today() - timedelta(days=recent_days)
 
 
-def get_trending_repositories(top_size):
-    url = BASE_URL +'/search/repositories'
-    query_params = {'q': 'created:>={}'.format(get_date(RECENT_DAYS)),
+def get_trending_repositories(top_size, recent_days):
+    url = 'https://api.github.com/search/repositories'
+    query_params = {'q': 'created:>={}'.format(recent_days),
                     'sort': 'stars',
                     'per_page': top_size}
     response = requests.get(url, params=query_params)
@@ -24,7 +19,7 @@ def get_trending_repositories(top_size):
     
 
 def get_open_issues_amount(repo_owner, repo_name):
-    url = BASE_URL + '/repos/{}/{}/issues'.format(repo_owner, repo_name)
+    url = 'https://api.github.com/repos/{}/{}/issues'.format(repo_owner, repo_name)
     response = requests.get(url)
     response_dict = response.json()
     open_issues = len(response_dict)
@@ -50,6 +45,8 @@ def pretty_print_output(repositories):
 
 
 if __name__ == '__main__':
-    trending_repositories = get_trending_repositories(TOP_SIZE)
+    TOP_SIZE = 20
+    days_count = get_date(recent_days)
+    trending_repositories = get_trending_repositories(TOP_SIZE, days_count)
     pretty_print_output(trending_repositories)
 
