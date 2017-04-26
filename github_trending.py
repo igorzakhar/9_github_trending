@@ -1,3 +1,4 @@
+import argparse
 from datetime import date, timedelta
 
 import requests
@@ -22,31 +23,41 @@ def get_open_issues_amount(repo_owner, repo_name):
     url = 'https://api.github.com/repos/{}/{}/issues'.format(repo_owner, repo_name)
     response = requests.get(url)
     response_dict = response.json()
-    open_issues = len(response_dict)
-    return open_issues, response.headers['X-RateLimit-Remaining']
+    open_issues_urls = [issue['url'] for issue in response_dict]
+    return open_issues_urls
 
 
-def pretty_print_output(repositories):
-    header_string = '{0:^30} | {1:^5} | {2:^11} | {3:^45}'
-    format_string = '{0:<30} | {1:^5} | {2:^11} | {3:<45}'
+def output_results(repositories, verbose):
+    format_string = ('Name: {0:<25} | Stars\u2605 : {1:^5} |'
+                    'Open issues: {2:^5} | URL {3:<45}')
     separator_string = '-' * 103
-    print(separator_string)
-    print(header_string.format('Name', 'Stars', 'Open issues', 'URL'))
-    print(separator_string)
     for repo in repositories:
-        open_issues, rate_limit = get_open_issues_amount(
-                                          repo['owner']['login'], repo['name'])
-        if rate_limit == '0':
-            open_issues = repo['open_issues']
         print(format_string.format(repo['name'], repo['stargazers_count'],
-                                   open_issues,
+                                   repo['open_issues'],
                                    repo['html_url']))
+        if verbose:
+            open_issues = get_open_issues_amount(repo['owner']['login'], 
+                                                 repo['name'])
+            print('Open issues urls:')
+            for issue in open_issues:
+                print(issue)
         print(separator_string)
 
 
-if __name__ == '__main__':
-    TOP_SIZE = 20
-    days_count = get_date(recent_days)
-    trending_repositories = get_trending_repositories(TOP_SIZE, days_count)
-    pretty_print_output(trending_repositories)
+def process_args():
+    parser = argparse.ArgumentParser(description='Most starred repos find')
+    parser.add_argument('-t', '--top_size',  default=20, 
+                        help='Number of repositories for search. Default = 20')
+    parser.add_argument('-d', '--recent_days', default=7,
+                        help='Number of days repos being created. Default = 7')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='output issues urls')
+    return  parser.parse_args()
 
+
+if __name__ == '__main__':
+    args = process_args()
+    days_count = get_date(args.recent_days)
+    trending_repos = get_trending_repositories(args.top_size, days_count)
+    output_results(trending_repos, args.verbose)
+                                                
